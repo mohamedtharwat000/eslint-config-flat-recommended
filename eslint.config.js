@@ -92,23 +92,26 @@ export const configPrettier = [prettierLint];
 export default function recommendedConfig({
   ts = true,
   react = true,
-  stylistic = true,
-  prettier = false,
+  prettier = true,
+  stylistic = false,
 } = {}) {
   let config = [...configJs];
 
   if (ts) {
     config = [...config, ...configTs];
   }
+
   if (react) {
     config = [...config, ...configReact];
   }
+
   if (prettier) {
     config = [...config, ...configPrettier];
-    stylistic = false;
   }
+
   if (stylistic) {
     config = [...config, ...configStylistic];
   }
+
   return config;
 }
