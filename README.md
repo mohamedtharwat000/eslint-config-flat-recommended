@@ -1,6 +1,6 @@
 # eslint-config-flat-recommended
 
-[Link for the package on npmjs.com](https://www.npmjs.com/package/eslint-config-flat-recommended)
+[npm package](https://www.npmjs.com/package/eslint-config-flat-recommended)
 
 This is an NPM package that provides a simple, recommended, flexible and configurable ESLint setup (flat config), allowing you to easily configure and extend your linting setup based on your project needs. The package supports JavaScript, TypeScript, React, and stylistic linting, along with optional Prettier integration.
 
@@ -21,14 +21,14 @@ npm i -D eslint-config-flat-recommended
 
 ## Usage
 
-You can use the `recommendedConfig` function to generate an ESLint configuration tailored to your project. By default, the configuration includes rules for JavaScript, TypeScript, React, and stylistic linting, with an option to include Prettier.
+You can use the `recommendedConfig` function to generate an ESLint configuration tailored to your project. the configuration includes rules for JavaScript, TypeScript, React, stylistic, and Prettier.
 
 ### Example
 
 ```javascript
 // eslint.config.js file
 
-import recommendedConfig from "eslint-config-recommended";
+import recommendedConfig from "eslint-config-flat-recommended";
 
 export default recommendedConfig();
 ```
@@ -37,18 +37,15 @@ export default recommendedConfig();
 
 ### Options
 
-- **`ts`** (`boolean`): Include TypeScript linting rules. Default is `true`.
-- **`react`** (`boolean`): Include React linting rules. Default is `true`.
-- **`prettier`** (`boolean`): Enable Prettier for code formatting and disable stylistic linting. Default is `true`.
-- **`stylistic`** (`boolean`): Include stylistic linting rules. Default is `false`.
-
 ```javascript
 // Example ESLint configuration
 const eslintConfig = recommendedConfig({
-  ts: true, // Include TypeScript linting
-  react: true, // Include React linting
-  prettier: true, // include Prettier integration
-  stylistic: true, // Include stylistic linting
+  js: true, // Include JavaScript linting (default: true)
+  ts: true, // Include TypeScript linting (default: false)
+  react: true, // Include React linting (default: false)
+  prettier: true, // include Prettier integration (default: false)
+  stylistic: true, // Include stylistic linting (default: false)
+  globals: ["browser", "node"], // Add global variables (default: [])
 });
 ```
 
