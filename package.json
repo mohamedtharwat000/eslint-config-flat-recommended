@@ -3,7 +3,7 @@
   "author": "Mohamed Tharwat",
   "description": "",
   "license": "MIT",
-  "version": "1.4.4",
+  "version": "1.4.5",
   "main": "eslint.config.js",
   "type": "module",
   "dependencies": {
