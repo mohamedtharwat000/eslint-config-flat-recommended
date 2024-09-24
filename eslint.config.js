@@ -54,7 +54,7 @@ const reactLintRecommended = {
 const reactHooksLintRecommended = {
   name: "eslint-plugin-react-hooks:recommended",
   files: ["**/*.jsx", "**/*.tsx"],
-  plugins: hooksLint,
+  plugins: { "react-hooks": hooksLint },
   rules: hooksLint.configs.recommended.rules,
 };
 
