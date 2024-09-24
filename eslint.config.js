@@ -78,7 +78,7 @@ const prettierLintRecommended = {
     "**/*.mts",
     "**/*.cts",
   ],
-  plugins: prettierPlugin,
+  plugins: { prettier: prettierPlugin },
   rules: prettierConfig.rules,
 };
 
