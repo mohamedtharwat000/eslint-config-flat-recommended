@@ -49,6 +49,11 @@ const reactLintRecommended = {
   plugins: reactLint.configs.flat.recommended.plugins,
   languageOptions: reactLint.configs.flat.recommended.languageOptions,
   rules: reactLint.configs.flat.recommended.rules,
+  settings: {
+    react: {
+      version: "detect",
+    },
+  },
 };
 
 const reactHooksLintRecommended = {
