@@ -145,17 +145,20 @@ export default function recommendedConfig(
     globals.length >= 1 &&
     globals.every((item) => typeof item === "string")
   ) {
-    const globalsToAdd = {};
-
-    globals.forEach((global) => {
-      globalsToAdd[global] = g[global];
-    });
-
     config.push({
       languageOptions: {
-        globals: globalsToAdd,
+        globals: {},
       },
     });
+
+    globals.forEach(
+      (global) =>
+        g[global] &&
+        Object.assign(
+          config[config.length - 1].languageOptions.globals,
+          g[global]
+        )
+    );
   }
 
   return config;
