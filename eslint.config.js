@@ -61,7 +61,7 @@ const reactHooksLintRecommended = {
 const jsxLintRecommended = {
   name: "eslint-plugin-jsx-a11y:recommended",
   files: ["**/*.jsx", "**/*.tsx"],
-  plugin: jsxLint.flatConfigs.recommended.plugins,
+  plugins: jsxLint.flatConfigs.recommended.plugins,
   languageOptions: jsxLint.flatConfigs.recommended.languageOptions,
   rules: jsxLint.flatConfigs.recommended.rules,
 };
