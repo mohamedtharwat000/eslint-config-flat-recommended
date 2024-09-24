@@ -1,17 +1,18 @@
 import eslint from "@eslint/js";
 import tslint from "typescript-eslint";
+import importLint from "eslint-plugin-import";
 import reactLint from "eslint-plugin-react";
-import jsxLint from "eslint-plugin-jsx-a11y";
 import hooksLint from "eslint-plugin-react-hooks";
+import jsxLint from "eslint-plugin-jsx-a11y";
 import stylisticLint from "@stylistic/eslint-plugin";
 import prettierConfig from "eslint-config-prettier";
 import prettierPlugin from "eslint-plugin-prettier";
 import g from "globals";
 
-const eslintRecommended = {
+const esLintRecommended = {
   name: "eslint:recommended",
   files: ["**/*.js", "**/*.jsx", "**/*.mjs", "**/*.cjs"],
-  ...eslint.configs.recommended,
+  rules: eslint.configs.recommended.rules,
 };
 
 const tsLintRecommended = {
@@ -25,29 +26,60 @@ const tsLintRecommended = {
   },
 };
 
+const importLintRecommended = {
+  name: "eslint-plugin-import:recommended",
+  files: [
+    "**/*.js",
+    "**/*.jsx",
+    "**/*.mjs",
+    "**/*.cjs",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.mts",
+    "**/*.cts",
+  ],
+  plugins: importLint.flatConfigs.recommended.plugins,
+  languageOptions: importLint.flatConfigs.recommended.languageOptions,
+  rules: importLint.flatConfigs.recommended.rules,
+};
+
 const reactLintRecommended = {
   name: "eslint-plugin-react:recommended",
   files: ["**/*.jsx", "**/*.tsx"],
-  ...reactLint.configs.flat.recommended,
+  plugins: reactLint.configs.flat.recommended.plugins,
+  languageOptions: reactLint.configs.flat.recommended.languageOptions,
+  rules: reactLint.configs.flat.recommended.rules,
 };
 
 const reactHooksLintRecommended = {
   name: "eslint-plugin-react-hooks:recommended",
   files: ["**/*.jsx", "**/*.tsx"],
-  ...hooksLint.configs.recommended,
+  plugins: hooksLint.configs.recommended.plugins,
+  rules: hooksLint.configs.recommended.rules,
 };
 
 const jsxLintRecommended = {
   name: "eslint-plugin-jsx-a11y:recommended",
   files: ["**/*.jsx", "**/*.tsx"],
-  ...jsxLint.flatConfigs.recommended,
+  plugin: jsxLint.flatConfigs.recommended.plugins,
+  languageOptions: jsxLint.flatConfigs.recommended.languageOptions,
+  rules: jsxLint.flatConfigs.recommended.rules,
 };
 
 const prettierLintRecommended = {
   name: "eslint-plugin-prettier:recommended",
-  files: ["**/*.js", "**/*.ts", "**/*.mjs", "**/*.cjs", "**/*.jsx", "**/*.tsx"],
-  rules: prettierConfig.rules,
+  files: [
+    "**/*.js",
+    "**/*.jsx",
+    "**/*.mjs",
+    "**/*.cjs",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.mts",
+    "**/*.cts",
+  ],
   plugins: prettierPlugin,
+  rules: prettierConfig.rules,
 };
 
 const stylisticLintRecommended = {
@@ -60,57 +92,51 @@ const stylisticLintRecommended = {
   },
 };
 
-export const configJs = [eslintRecommended];
-
-export const configTs = [tsLintRecommended];
-
-export const configReact = [
-  reactLintRecommended,
-  jsxLintRecommended,
-  reactHooksLintRecommended,
-];
-
-export const configPrettier = [prettierLintRecommended];
-
-export const configStylistic = [stylisticLintRecommended];
-
 export default function recommendedConfig(
   {
     js = true,
-    ts = false,
-    react = false,
-    prettier = false,
+    ts = true,
+    imports = true,
+    react = true,
+    prettier = true,
     stylistic = false,
-    globals = [],
+    globals = ["browser", "node"],
   } = {
     js: true,
-    ts: false,
-    react: false,
-    prettier: false,
+    ts: true,
+    imports: true,
+    react: true,
+    prettier: true,
     stylistic: false,
-    globals: [],
+    globals: ["browser", "node"],
   }
 ) {
   let config = [];
 
   if (js) {
-    config = [...config, ...configJs];
+    config.push(esLintRecommended);
   }
 
   if (ts) {
-    config = [...config, ...configTs];
+    config.push(tsLintRecommended);
+  }
+
+  if (imports) {
+    config.push(importLintRecommended);
   }
 
   if (react) {
-    config = [...config, ...configReact];
+    config.push(reactLintRecommended);
+    config.push(reactHooksLintRecommended);
+    config.push(jsxLintRecommended);
   }
 
-  if (prettier) {
-    config = [...config, ...configPrettier];
+  if (prettier && !stylistic) {
+    config.push(prettierLintRecommended);
   }
 
-  if (stylistic) {
-    config = [...config, ...configStylistic];
+  if (stylistic && !prettier) {
+    config.push(stylisticLintRecommended);
   }
 
   if (
@@ -125,14 +151,11 @@ export default function recommendedConfig(
       globalsToAdd[global] = g[global];
     });
 
-    config = [
-      ...config,
-      {
-        languageOptions: {
-          globals: globalsToAdd,
-        },
+    config.push({
+      languageOptions: {
+        globals: globalsToAdd,
       },
-    ];
+    });
   }
 
   return config;

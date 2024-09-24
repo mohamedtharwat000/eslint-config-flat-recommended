@@ -21,7 +21,7 @@ npm i -D eslint-config-flat-recommended
 
 ## Usage
 
-You can use the `recommendedConfig` function to generate an ESLint configuration tailored to your project. the configuration includes rules for JavaScript, TypeScript, React, stylistic, and Prettier.
+You can use the `recommendedConfig` function to generate an ESLint configuration tailored to your project. the configuration includes rules for JavaScript, TypeScript, imports, React, Prettier, and stylistic.
 
 ### Example
 
@@ -33,29 +33,20 @@ import recommendedConfig from "eslint-config-flat-recommended";
 export default recommendedConfig();
 ```
 
-### Options Section
-
 ### Options
 
 ```javascript
 // Example ESLint configuration
 const eslintConfig = recommendedConfig({
   js: true, // Include JavaScript linting (default: true)
-  ts: true, // Include TypeScript linting (default: false)
-  react: true, // Include React linting (default: false)
-  prettier: true, // include Prettier integration (default: false)
+  ts: true, // Include TypeScript linting (default: true)
+  imports: true, // Include import linting (default: true)
+  react: true, // Include React linting (default: true)
+  prettier: true, // include Prettier integration (default: true)
   stylistic: true, // Include stylistic linting (default: false)
-  globals: ["browser", "node"], // Add global variables (default: [])
+  globals: ["browser", "node"], // Add global variables (default: ["browser", "node"])
 });
 ```
-
-### Configurations Provided
-
-- **JavaScript Linting**: Lints JavaScript using `eslint` recommended rules.
-- **TypeScript Linting**: Lints TypeScript using `typescript-eslint` recommended rules.
-- **React Linting**: Lints React with recommended rules from `eslint-plugin-react`, `eslint-plugin-react-hooks`, and `eslint-plugin-jsx-a11y`.
-- **Stylistic Linting**: Enforces consistent coding styles using `@stylistic/eslint-plugin`.
-- **Prettier Integration**: Disable prettier rules from `eslint-config-prettier`.
 
 ## License
 
