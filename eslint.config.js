@@ -7,164 +7,165 @@ import jsxLint from "eslint-plugin-jsx-a11y";
 import stylisticLint from "@stylistic/eslint-plugin";
 import prettierConfig from "eslint-config-prettier";
 import prettierPlugin from "eslint-plugin-prettier";
-import g from "globals";
 
-const esLintRecommended = {
-  name: "eslint:recommended",
-  files: ["**/*.js", "**/*.jsx", "**/*.mjs", "**/*.cjs"],
-  rules: eslint.configs.recommended.rules,
+const createLintConfig = ({ name, files, plugins, languageOptions, rules }) => {
+  const config = {};
+
+  if (name) config.name = name;
+  if (files) config.files = files;
+  if (plugins) config.plugins = plugins;
+  if (languageOptions) config.languageOptions = languageOptions;
+  if (rules) config.rules = rules;
+
+  return config;
 };
 
-const tsLintRecommended = {
-  name: "typescript-eslint:recommended",
-  files: ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"],
-  plugins: tslint.configs.recommended[0].plugins,
-  languageOptions: tslint.configs.recommended[0].languageOptions,
-  rules: {
-    ...tslint.configs.recommended[1].rules,
-    ...tslint.configs.recommended[2].rules,
-  },
+const esLintConfig = (configType = "recommended") => {
+  const config = eslint.configs[configType] ?? eslint.configs.recommended;
+
+  return createLintConfig({
+    name: "eslint",
+    files: ["**/*.js", "**/*.mjs", "**/*.cjs", "**/*.jsx"],
+    rules: config.rules,
+  });
 };
 
-const importLintRecommended = {
-  name: "eslint-plugin-import:recommended",
-  files: [
-    "**/*.js",
-    "**/*.jsx",
-    "**/*.mjs",
-    "**/*.cjs",
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.mts",
-    "**/*.cts",
-  ],
-  plugins: importLint.flatConfigs.recommended.plugins,
-  languageOptions: importLint.flatConfigs.recommended.languageOptions,
-  rules: importLint.flatConfigs.recommended.rules,
+const tsLintConfig = (configType = "recommended") => {
+  const config = tslint.configs[configType] ?? tslint.configs.recommended;
+
+  return createLintConfig({
+    name: "typescript-eslint",
+    files: ["**/*.ts", "**/*.mts", "**/*.cts", "**/*.tsx"],
+    plugins: config[0].plugins,
+    languageOptions: config[0].languageOptions,
+    rules: { ...config[1].rules, ...config[2].rules },
+  });
 };
 
-const reactLintRecommended = {
-  name: "eslint-plugin-react:recommended",
-  files: ["**/*.jsx", "**/*.tsx"],
-  plugins: reactLint.configs.flat.recommended.plugins,
-  languageOptions: reactLint.configs.flat.recommended.languageOptions,
-  rules: reactLint.configs.flat.recommended.rules,
-  settings: {
-    react: {
-      version: "detect",
-    },
-  },
+const importLintConfig = (configType = "recommended") => {
+  const config =
+    importLint.flatConfigs[configType] ?? importLint.flatConfigs.recommended;
+
+  return createLintConfig({
+    name: "import",
+    files: [
+      "**/*.js",
+      "**/*.jsx",
+      "**/*.mjs",
+      "**/*.ts",
+      "**/*.tsx",
+      "**/*.mts",
+    ],
+    plugins: config.plugins,
+    languageOptions: config.languageOptions,
+    rules: config.rules,
+  });
 };
 
-const reactHooksLintRecommended = {
-  name: "eslint-plugin-react-hooks:recommended",
-  files: ["**/*.jsx", "**/*.tsx"],
-  plugins: { "react-hooks": hooksLint },
-  rules: hooksLint.configs.recommended.rules,
+const reactLintConfig = (configType = "recommended") => {
+  const config =
+    reactLint.configs.flat[configType] ?? reactLint.configs.flat.recommended;
+
+  return createLintConfig({
+    name: "react",
+    files: ["**/*.jsx", "**/*.tsx"],
+    plugins: config.plugins,
+    languageOptions: config.languageOptions,
+    rules: config.rules,
+  });
 };
 
-const jsxLintRecommended = {
-  name: "eslint-plugin-jsx-a11y:recommended",
-  files: ["**/*.jsx", "**/*.tsx"],
-  plugins: jsxLint.flatConfigs.recommended.plugins,
-  languageOptions: jsxLint.flatConfigs.recommended.languageOptions,
-  rules: jsxLint.flatConfigs.recommended.rules,
+const reactHooksLintConfig = () => {
+  return createLintConfig({
+    name: "react-hooks",
+    files: ["**/*.jsx", "**/*.tsx"],
+    plugins: { "react-hooks": hooksLint },
+    rules: hooksLint.configs.recommended.rules,
+  });
 };
 
-const prettierLintRecommended = {
-  name: "eslint-plugin-prettier:recommended",
-  files: [
-    "**/*.js",
-    "**/*.jsx",
-    "**/*.mjs",
-    "**/*.cjs",
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.mts",
-    "**/*.cts",
-  ],
-  plugins: { prettier: prettierPlugin },
-  rules: prettierConfig.rules,
+const jsxLintConfig = (configType = "recommended") => {
+  const config =
+    jsxLint.flatConfigs[configType] ?? jsxLint.flatConfigs.recommended;
+
+  return createLintConfig({
+    name: "jsx-a11y",
+    files: ["**/*.jsx", "**/*.tsx"],
+    plugins: config.plugins,
+    languageOptions: config.languageOptions,
+    rules: config.rules,
+  });
 };
 
-const stylisticLintRecommended = {
-  name: "stylistic:recommended",
-  files: ["**/*.js", "**/*.ts", "**/*.mjs", "**/*.cjs", "**/*.jsx", "**/*.tsx"],
-  plugins: stylisticLint.configs["recommended-flat"].plugins,
-  rules: {
-    ...stylisticLint.configs["disable-legacy"].rules,
-    ...stylisticLint.configs["recommended-flat"].rules,
-  },
+const prettierLintConfig = () => {
+  return createLintConfig({
+    name: "prettier",
+    files: [
+      "**/*.js",
+      "**/*.mjs",
+      "**/*.cjs",
+      "**/*.ts",
+      "**/*.mts",
+      "**/*.cts",
+      "**/*.jsx",
+      "**/*.tsx",
+    ],
+    plugins: { prettier: prettierPlugin },
+    rules: prettierConfig.rules,
+  });
+};
+
+const stylisticLintConfig = (stylisticConfig = "recommended-flat") => {
+  const disabledLegacyConfig = stylisticLint.configs["disable-legacy"];
+  const config =
+    stylisticLint.configs[stylisticConfig] ??
+    stylisticLint.configs["recommended-flat"];
+  return createLintConfig({
+    name: "stylistic",
+    files: [
+      "**/*.js",
+      "**/*.mjs",
+      "**/*.cjs",
+      "**/*.ts",
+      "**/*.mts",
+      "**/*.cts",
+      "**/*.jsx",
+      "**/*.tsx",
+    ],
+    plugins: config.plugins,
+    rules: { ...disabledLegacyConfig.rules, ...config.rules },
+  });
 };
 
 export default function recommendedConfig(
-  {
-    js = true,
-    ts = true,
-    imports = true,
-    react = true,
-    prettier = true,
-    stylistic = false,
-    globals = ["browser", "node"],
-  } = {
-    js: true,
-    ts: true,
-    imports: true,
-    react: true,
-    prettier: true,
-    stylistic: false,
-    globals: ["browser", "node"],
+  { js, ts, imports, react, prettier, stylistic } = {
+    js: "recommended",
+    ts: "recommended",
+    imports: "recommended",
+    react: "recommended",
+    prettier: "recommended",
+    stylistic: "recommended-flat",
   }
 ) {
-  let config = [];
+  const config = [];
 
-  if (js) {
-    config.push(esLintRecommended);
-  }
-
-  if (ts) {
-    config.push(tsLintRecommended);
-  }
-
-  if (imports) {
-    config.push(importLintRecommended);
-  }
-
+  if (js) config.push(esLintConfig());
+  if (ts) config.push(tsLintConfig());
+  // if (imports) config.push(importLintConfig());
   if (react) {
-    config.push(reactLintRecommended);
-    config.push(reactHooksLintRecommended);
-    config.push(jsxLintRecommended);
-  }
-
-  if (prettier && !stylistic) {
-    config.push(prettierLintRecommended);
-  }
-
-  if (stylistic && !prettier) {
-    config.push(stylisticLintRecommended);
-  }
-
-  if (
-    globals &&
-    Array.isArray(globals) &&
-    globals.length >= 1 &&
-    globals.every((item) => typeof item === "string")
-  ) {
     config.push({
-      languageOptions: {
-        globals: {},
+      ...reactLintConfig(),
+      settings: {
+        react: {
+          version: "detect",
+        },
       },
     });
-
-    globals.forEach(
-      (global) =>
-        g[global] &&
-        Object.assign(
-          config[config.length - 1].languageOptions.globals,
-          g[global]
-        )
-    );
+    config.push(reactHooksLintConfig());
+    config.push(jsxLintConfig());
   }
+  if (prettier) config.push(prettierLintConfig());
+  if (stylistic) config.push(stylisticLintConfig());
 
   return config;
 }

@@ -2,7 +2,7 @@
 
 [npm package](https://www.npmjs.com/package/eslint-config-flat-recommended)
 
-This is an NPM package that provides a simple, recommended, flexible and configurable ESLint setup (flat config), allowing you to easily configure and extend your linting setup based on your project needs. The package supports JavaScript, TypeScript, React, and stylistic linting, along with optional Prettier integration.
+This is an NPM package that provides a simple, recommended, flexible, and configurable ESLint setup (flat config), allowing you to easily configure and extend your linting setup based on your project needs. The package supports JavaScript, TypeScript, React, and stylistic linting and Prettier integration.
 
 ## Features
 
@@ -40,9 +40,8 @@ export default recommendedConfig();
 const eslintConfig = recommendedConfig({
   js: true, // Include JavaScript linting (default: true)
   ts: true, // Include TypeScript linting (default: true)
-  imports: true, // Include import linting (default: true)
   react: true, // Include React linting (default: true)
-  prettier: true, // include Prettier integration (default: true)
+  prettier: true, // Include Prettier integration (default: true)
   stylistic: true, // Include stylistic linting (default: false)
   globals: ["browser", "node"], // Add global variables (default: ["browser", "node"])
 });
