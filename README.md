@@ -7,7 +7,7 @@ This is an NPM package that provides a simple, recommended, flexible, and config
 ## Features
 
 - **JavaScript and TypeScript support**: Linting for JavaScript and TypeScript.
-- **React and JSX support**: Includes rules for React.
+- **React and JSX support**: Includes rules for React, React hooks and JSX.
 - **Prettier integration**: Use Prettier for code formatting.
 - **Stylistic linting**: Optionally enforces consistent code style across your project.
 
@@ -38,12 +38,11 @@ export default recommendedConfig();
 ```javascript
 // Example ESLint configuration
 const eslintConfig = recommendedConfig({
-  js: true, // Include JavaScript linting (default: true)
-  ts: true, // Include TypeScript linting (default: true)
-  react: true, // Include React linting (default: true)
-  prettier: true, // Include Prettier integration (default: true)
-  stylistic: true, // Include stylistic linting (default: false)
-  globals: ["browser", "node"], // Add global variables (default: ["browser", "node"])
+  js: "recommended", // Include JavaScript linting (default: "recommended")
+  ts: "recommended", // Include TypeScript linting (default: "recommended")
+  react: "recommended", // Include React linting (default: "recommended")
+  prettier: "recommended", // Include Prettier integration (default: "recommended")
+  stylistic: "recommended-flat", // Include stylistic (default: "recommended-flat")
 });
 ```
 
